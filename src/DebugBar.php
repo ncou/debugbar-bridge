@@ -26,13 +26,13 @@ use DebugBar\DataCollector\MemoryCollector;
 use DebugBar\DataCollector\MessagesCollector;
 use DebugBar\DataCollector\PhpInfoCollector;
 use DebugBar\DataCollector\TimeDataCollector;
-use DebugBar\JavascriptRenderer;
+//use DebugBar\JavascriptRenderer;
 
 //https://github.com/top-think/think-debugbar/blob/master/src/DebugBar.php
 
 final class DebugBar extends OriginalDebugBar
 {
-    public function getJavascriptRenderer($baseUrl = '/debugbar', $basePath = null)
+    public function getJavascriptRenderer($baseUrl = null, $basePath = null)
     {
         if ($this->jsRenderer === null) {
             $this->jsRenderer = new JavascriptRenderer($this, $baseUrl, $basePath);
@@ -165,6 +165,7 @@ final class DebugBar extends OriginalDebugBar
     }
 */
 
+// TODO : méthode à virer !!!
     public function inject(ResponseInterface $response)
     {
         $content = $response->getBody();
@@ -182,4 +183,48 @@ final class DebugBar extends OriginalDebugBar
         }
         $response->content($content);
     }
+
+
+
+
+
+
+
+// https://github.com/barryvdh/laravel-debugbar/blob/70b89754913fd89fef16d0170a91dbc2a5cd633a/src/LaravelDebugbar.php#L1031
+
+    /**
+     * Magic calls for adding messages
+     *
+     * @param string $method
+     * @param array $args
+     * @return mixed|void
+     */
+    /*
+    public function __call($method, $args)
+    {
+        $messageLevels = ['emergency', 'alert', 'critical', 'error', 'warning', 'notice', 'info', 'debug', 'log'];
+        if (in_array($method, $messageLevels)) {
+            foreach ($args as $arg) {
+                $this->addMessage($arg, $method);
+            }
+        }
+    }*/
+
+    /**
+     * Adds a message to the MessagesCollector
+     *
+     * A message can be anything from an object to a string
+     *
+     * @param mixed $message
+     * @param string $label
+     */
+    /*
+    public function addMessage($message, $label = 'info')
+    {
+        if ($this->hasCollector('messages')) {
+            $collector = $this->getCollector('messages');
+            $collector->addMessage($message, $label);
+        }
+    }
+    */
 }

@@ -15,16 +15,17 @@ use Chiron\Http\Middleware\TagRequestMiddleware;
 use Chiron\Core\Exception\BootException;
 use Chiron\DebugBar\Controller\AssetController;
 use Chiron\DebugBar\Middleware\DebugBarMiddleware;
+use Chiron\Routing\Map;
 
 use Symfony\Component\ErrorHandler\DebugClassLoader;
 
 final class DebugBarBootloader extends AbstractBootloader
 {
-    public function boot(Http $http): void
+    public function boot(Http $http, Map $map): void
     {
         $http->addMiddleware(DebugBarMiddleware::class, Http::PRIORITY_MAX - 4);
 
-        //$routeCollection->get("debugbar/:path", AssetController::class . "@index")->pattern(['path' => '[\w\.\/\-_]+']);
-        //$map->get("bar/debugbar/{path}")->to([AssetController::class, 'index'])->assert('path', '[\w\.\/\-_]+');
+        $map->get('debugbar/assets/stylesheets')->to([AssetController::class, 'css'])->name('debugbar.assets.css');
+        $map->get('debugbar/assets/javascript')->to([AssetController::class, 'js'])->name('debugbar.assets.js');
     }
 }
