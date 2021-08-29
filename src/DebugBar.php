@@ -6,7 +6,6 @@ namespace Chiron\DebugBar;
 
 use Chiron\Core\Container\Bootloader\AbstractBootloader;
 use Chiron\Http\Config\HttpConfig;
-use Chiron\Core\Config\SettingsConfig;
 use Chiron\Http\Http;
 use Chiron\Http\Middleware\ErrorHandlerMiddleware;
 use Chiron\Http\Middleware\AllowedHostsMiddleware;
@@ -19,6 +18,8 @@ use Chiron\DebugBar\DebugBar;
 use Psr\Http\Message\ResponseInterface;
 use DebugBar\DebugBar as OriginalDebugBar;
 
+use Chiron\Container\SingletonInterface;
+
 use Closure;
 use DebugBar\DataCollector\ConfigCollector;
 use DebugBar\DataCollector\DataCollectorInterface;
@@ -30,7 +31,9 @@ use DebugBar\DataCollector\TimeDataCollector;
 
 //https://github.com/top-think/think-debugbar/blob/master/src/DebugBar.php
 
-final class DebugBar extends OriginalDebugBar
+// TODO : virer le implements SingletonInterface et faire un ServiceProvider pour binder dans le container une instance singleton de la classe DebugBar, il faudra aussi attacher un UrlGeneratorInterface dans le JavascriptRenderer !!!!
+// TODO : ajouter une méthode __constructor() qui prendra en paramétre un JavascriptRendererInterface !!!!
+final class DebugBar extends OriginalDebugBar implements SingletonInterface
 {
     public function getJavascriptRenderer($baseUrl = null, $basePath = null)
     {
@@ -227,4 +230,156 @@ final class DebugBar extends OriginalDebugBar
         }
     }
     */
+
+
+//https://github.com/Rareloop/lumberjack-debugbar/blob/master/src/DebugBar.php#L101
+    /**
+     * Magic calls for adding messages
+     *
+     * Inspired by Laravel DebugBar: https://github.com/barryvdh/laravel-debugbar/blob/master/src/LaravelDebugbar.php
+     *
+     * @param string $method
+     * @param array $args
+     * @return mixed|void
+     */
+    /*
+    public function __call($method, $args)
+    {
+        $messageLevels = ['emergency', 'alert', 'critical', 'error', 'warning', 'notice', 'info', 'debug', 'log'];
+
+        if (in_array($method, $messageLevels)) {
+            foreach($args as $arg) {
+                $this->addMessage($arg, $method);
+            }
+        }
+    }*/
+
+    /**
+     * Adds a message to the MessagesCollector
+     *
+     * Inspired by Laravel DebugBar: https://github.com/barryvdh/laravel-debugbar/blob/master/src/LaravelDebugbar.php
+     *
+     * A message can be anything from an object to a string
+     *
+     * @param mixed $message
+     * @param string $label
+     */
+    /*
+    public function addMessage($message, $label = 'info')
+    {
+        if ($this->hasCollector('messages')) {
+            // @var \DebugBar\DataCollector\MessagesCollector $collector
+            $collector = $this->getCollector('messages');
+            $collector->addMessage($message, $label);
+        }
+    }*/
+
+    /**
+     * Starts a measure
+     *
+     * Inspired by Laravel DebugBar: https://github.com/barryvdh/laravel-debugbar/blob/master/src/LaravelDebugbar.php
+     *
+     * @param string $name Internal name, used to stop the measure
+     * @param string $label Public name
+     */
+    /*
+    public function startMeasure($name, $label = null)
+    {
+        if ($this->hasCollector('time')) {
+            // @var \DebugBar\DataCollector\TimeDataCollector $collector
+            $collector = $this->getCollector('time');
+            $collector->startMeasure($name, $label);
+        }
+    }*/
+
+    /**
+     * Stops a measure
+     *
+     * Inspired by Laravel DebugBar: https://github.com/barryvdh/laravel-debugbar/blob/master/src/LaravelDebugbar.php
+     *
+     * @param string $name
+     */
+    /*
+    public function stopMeasure($name)
+    {
+        if ($this->hasCollector('time')) {
+            // @var \DebugBar\DataCollector\TimeDataCollector $collector
+            $collector = $this->getCollector('time');
+            try {
+                $collector->stopMeasure($name);
+            } catch (\Exception $e) {
+                //  $this->addThrowable($e);
+            }
+        }
+    }*/
+
+    /**
+     * Adds a measure
+     *
+     * Inspired by Laravel DebugBar: https://github.com/barryvdh/laravel-debugbar/blob/master/src/LaravelDebugbar.php
+     *
+     * @param string $label
+     * @param float $start
+     * @param float $end
+     */
+    /*
+    public function addMeasure($label, $start, $end)
+    {
+        if ($this->hasCollector('time')) {
+            // @var \DebugBar\DataCollector\TimeDataCollector $collector
+            $collector = $this->getCollector('time');
+            $collector->addMeasure($label, $start, $end);
+        }
+    }*/
+
+    /**
+     * Utility function to measure the execution of a Closure
+     *
+     * Inspired by Laravel DebugBar: https://github.com/barryvdh/laravel-debugbar/blob/master/src/LaravelDebugbar.php
+     *
+     * @param string $label
+     * @param \Closure $closure
+     */
+    /*
+    public function measure($label, \Closure $closure)
+    {
+        if ($this->hasCollector('time')) {
+            // @var \DebugBar\DataCollector\TimeDataCollector $collector
+            $collector = $this->getCollector('time');
+            $collector->measure($label, $closure);
+        } else {
+            $closure();
+        }
+    }*/
+
+    /**
+     * Adds an exception to be profiled in the debug bar
+     *
+     * Inspired by Laravel DebugBar: https://github.com/barryvdh/laravel-debugbar/blob/master/src/LaravelDebugbar.php
+     *
+     * @param Exception $e
+     * @deprecated in favor of addThrowable
+     */
+    /*
+    public function addException(Exception $e)
+    {
+        return $this->addThrowable($e);
+    }*/
+
+    /**
+     * Adds an exception to be profiled in the debug bar
+     *
+     * Inspired by Laravel DebugBar: https://github.com/barryvdh/laravel-debugbar/blob/master/src/LaravelDebugbar.php
+     *
+     * @param Exception $e
+     */
+    /*
+    public function addThrowable($e)
+    {
+        if ($this->hasCollector('exceptions')) {
+            // @var \DebugBar\DataCollector\ExceptionsCollector $collector
+            $collector = $this->getCollector('exceptions');
+            $collector->addThrowable($e);
+        }
+    }*/
 }

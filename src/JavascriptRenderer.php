@@ -6,7 +6,6 @@ namespace Chiron\DebugBar;
 
 use Chiron\Core\Container\Bootloader\AbstractBootloader;
 use Chiron\Http\Config\HttpConfig;
-use Chiron\Core\Config\SettingsConfig;
 use Chiron\Http\Http;
 use Chiron\Http\Middleware\ErrorHandlerMiddleware;
 use Chiron\Http\Middleware\AllowedHostsMiddleware;
@@ -26,6 +25,8 @@ use DebugBar\DataCollector\PhpInfoCollector;
 use DebugBar\DataCollector\TimeDataCollector;
 use Chiron\Routing\UrlGeneratorInterface;
 use DebugBar\JavascriptRenderer as BaseJavascriptRenderer;
+
+//https://github.com/Rareloop/lumberjack-debugbar/blob/master/src/JavaScriptRenderer.php
 
 // TODO : passer la classe en final et virer les protected !!!!
 class JavascriptRenderer extends BaseJavascriptRenderer

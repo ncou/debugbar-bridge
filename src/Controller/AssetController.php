@@ -6,7 +6,6 @@ namespace Chiron\DebugBar\Controller;
 
 use Chiron\Core\Container\Bootloader\AbstractBootloader;
 use Chiron\Http\Config\HttpConfig;
-use Chiron\Core\Config\SettingsConfig;
 use Chiron\Http\Http;
 use Chiron\Http\Middleware\ErrorHandlerMiddleware;
 use Chiron\Http\Middleware\AllowedHostsMiddleware;
@@ -62,6 +61,7 @@ final class AssetController
         $content = $this->debugbar->getJavascriptRenderer()->dumpAssetsToString($extension);
         $mime = MimeType::fromExtension($extension);
 
+        // TODO : utiliser plutot un middleware cache qu'on ajoute à la route debugbar pour cacher la réponse pendant 1 année. => https://github.com/barryvdh/laravel-httpcache/blob/master/src/Middleware/SetTtl.php
         $response = $this->responseFactory->createResponse();
         $response = $response->withHeader('Content-Type', $mime);
         $response = $response->withHeader('Cache-Control', 'max-age=31536000, s-maxage=31536000, public');
